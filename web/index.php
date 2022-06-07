@@ -958,22 +958,22 @@ include( "session.php" );
                 for (var i = 0; i < state.length; i++) {
                     if (state[i].alive) {
                         $(".mytab .mytitle").eq(i).addClass("online");
-                        $(".mytab .mytitle span").eq(i).text(Math.floor(state[i].speed*8/1024)+"kb/s");
-                        $(".mytab .progress-bar").eq(i).css("width",state[i].buffer+"%");
                     }
                     else{
                         $(".mytab .mytitle").eq(i).removeClass("online");
-                        $(".mytab .mytitle span").eq(i).text("- - -");
-                        $(".mytab .progress-bar").eq(i).css("width",0);
                     }
 
                     if(state[i].alive && state[i].startTime>0)
                     {
                         $(".mytab img").eq(i).attr( "src", "snap/snap" + i + ".jpg?rnd=" + Math.random() );
+                        $(".mytab .mytitle span").eq(i).text(Math.floor(state[i].speed*8/1024)+"kb/s");
+                        $(".mytab .progress-bar").eq(i).css("width",state[i].buffer+"%");
                     }
                     else
                     {
                         $(".mytab img").eq(i).attr( "src", "/img/nosignal.jpg" );
+                        $(".mytab .mytitle span").eq(i).text("- - -");
+                        $(".mytab .progress-bar").eq(i).css("width",0);
                     }
 
                 }
