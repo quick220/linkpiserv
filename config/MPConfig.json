@@ -1,0 +1,98 @@
+[
+    {
+        "name": "聚合通道1",
+        "port": 6000,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream1"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream1"
+            }
+        ]
+    },
+    {
+        "name": "聚合通道2",
+        "port": 6001,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream2"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream2"
+            }
+        ]
+    },
+    {
+        "name": "聚合通道3",
+        "port": 6002,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream3"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream3"
+            }
+        ]
+    },
+    {
+        "name": "聚合通道4",
+        "port": 6003,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream4"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream4"
+            }
+        ]
+    },
+    {
+        "name": "聚合通道5",
+        "port": 6004,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream5"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream5"
+            }
+        ]
+    },
+    {
+        "name": "聚合通道6",
+        "port": 6005,
+        "url": [
+            {
+                "des": "直播",
+                "enable": false,
+                "path": "rtmp://127.0.0.1/live/stream6"
+            },
+            {
+                "des": "回传",
+                "enable": false,
+                "path": "srt://127.0.0.1:8080?streamid=push/live/stream6"
+            }
+        ]
+    }
+]
