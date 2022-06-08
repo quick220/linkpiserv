@@ -547,7 +547,7 @@ include( "session.php" );
                                             <div class="form-group row">
                                                 <label class="col-4 text-right col-form-label">码率控制</label>
                                                 <div class="col-8">
-                                                    <select zcfg="encode.encV_cfg[0].rcmode" class="form-control bg-dark text-white">
+                                                    <select zcfg="encode.encV_cfg[0].rcmode" id="rcmode" class="form-control bg-dark text-white">
                                                         <option value="avbr">AVBR</option>
                                                         <option value="vbr">VBR</option>
                                                         <option value="cbr">CBR</option>
@@ -803,6 +803,7 @@ include( "session.php" );
                 {
                     clientConfig=data;
                     zcfg("#myTabContent",clientConfig);
+                    showQP();
                 }
             } );
         }
@@ -811,6 +812,7 @@ include( "session.php" );
             index = i;
             zctemplet("#templetURL", config[i].url);
             zcfg("#exampleModal", config[i]);
+            
             for (var i = 0; i < config.length; i++) {
                 if (i == index)
                     $(".mytab .col").eq(i).addClass("active");
@@ -844,6 +846,22 @@ include( "session.php" );
         player.attachMediaElement(document.getElementById("player"));
     }
 
+
+    $("#rcmode").change(showQP);
+
+        function showQP()
+        {
+            if($("#rcmode").val()=="vbr")
+            {
+                $("#minqp").show(); 
+                $("#maxqp").show();
+            }
+            else
+            {
+                $("#minqp").hide(); 
+                $("#maxqp").hide();
+            }
+        }
 
         function stopPreview()
         {
