@@ -27,34 +27,6 @@ function htmlAlert(obj,type,title,text,duration)
 		
 	  }
 }
-
-//function rpc(func, params, callbak, usrdata) {
-//	if(params==undefined || params==null)
-//		params=[];
-//	
-//	
-//	if(callbak!=undefined)
-//		 $.xmlrpc({
-//			url: '/RPC2',
-//			methodName: func,
-//			async: true,
-//			params: params,
-//			error: function (jqXHR, status, error) {
-//				console.log(error);
-//			},
-//			success: function (data){callbak(data[0],usrdata);}
-//		});
-//	else
-//		$.xmlrpc({
-//			url: '/RPC2',
-//			methodName: func,
-//			async: true,
-//			params: params,
-//			error: function (jqXHR, status, error) {
-//				console.log(error);
-//			}
-//		});
-//}
 function rpcc(func, params, callbak, usrdata, jsonrpc) {
 	if(params==undefined || params==null)
 		params=[];	
@@ -70,62 +42,26 @@ function rpc(func, params, callbak, usrdata) {
 	rpcc(func, params, callbak, usrdata, jsonrpc);
 }
 
-function rpc2(func, params, callbak, usrdata) {
-	var jsonrpc = new $.JsonRpcClient({ ajaxUrl: 'RPC2' });
-	rpcc(func, params, callbak, usrdata, jsonrpc);
-}
-
-function rpc3(func, params, callbak, usrdata) {
-	var jsonrpc = new $.JsonRpcClient({ ajaxUrl: 'RPC3' });
-	rpcc(func, params, callbak, usrdata, jsonrpc);
-}
-
-function rpc4(func, params, callbak, usrdata) {
-	var jsonrpc = new $.JsonRpcClient({ ajaxUrl: 'RPC4' });
-	rpcc(func, params, callbak, usrdata, jsonrpc);
-}
-
-
 
 function func(func, data, callbak)
 {
 	$.post("func.php?func="+func,data,callbak,"json");
 }
 
-function navIndex(index){
-	$("#defaultNavbar1>ul>li").eq(index).addClass("active");
-}
-
-
 function changeLang(lang){
 	$("#langcss").attr("href","css/"+lang+".css");
-	$.cookie('lang',lang);
 	$("option["+lang+"]").each(function(){
 		$(this).text($(this).attr(lang));
 	});
 	func("saveConfigFile",{path: "config/lang.json",data:JSON.stringify({"lang":lang},null,2)});
 }
 
-function getUsedTheme() {
-	var theme = "";
-	$.ajaxSettings.async = false;
-	$.getJSON("config/theme.json",function (data) {
-		var used = data["used"];
-		if(used !== "" || used !== undefined ){
-			theme = used;
-			localStorage.setItem("used_theme",used);
-		}
-	})
-	$.ajaxSettings.async = true;
-	return theme;
-}
 
 function getUsedLang() {
 	$.ajaxSettings.async = false;
 	$.getJSON("config/lang.json",function (data) {
 		var lang = data["lang"];
 		$("#langcss").attr("href","css/"+lang+".css");
-		$.cookie('lang',lang);
 		$("option["+lang+"]").each(function(){
 			$(this).text($(this).attr(lang));
 		});
@@ -146,6 +82,5 @@ $(function(){
 	  cache: false
 	});
 
-
-
+	getUsedLang();
 });
