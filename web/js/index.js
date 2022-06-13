@@ -125,8 +125,7 @@ function snap(){
 					record:false
 				},
 				forceNoOffscreen: true,
-				isNotMute: false,
-				useMSE: (state[snapIndex].codec!="h265"),
+				isNotMute: false
 			},);
 			snapPlayer.play('http://'+window.location.host+'/flv?app=live&stream=preview'+snapIndex);
 			snapPlayTime=(new Date()).getTime();
