@@ -96,7 +96,7 @@ function startPreview() {
 		},
 		forceNoOffscreen: true,
 		isNotMute: false,
-		useMSE: (state[index].codec!="h265"),
+		//useMSE: (state[index].codec!="h265"),
 	},);
 	player.play('http://'+window.location.host+'/flv?app=live&stream=preview'+index);
 	playTime=(new Date()).getTime();
