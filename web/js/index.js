@@ -96,6 +96,7 @@ function startPreview() {
 		},
 		forceNoOffscreen: true,
 		isNotMute: false,
+		useMSE: (state[index].codec!="h265"),
 	},);
 	player.play('http://'+window.location.host+'/flv?app=live&stream=preview'+index);
 	playTime=(new Date()).getTime();
@@ -125,6 +126,7 @@ function snap(){
 				},
 				forceNoOffscreen: true,
 				isNotMute: false,
+				useMSE: (state[snapIndex].codec!="h265"),
 			},);
 			snapPlayer.play('http://'+window.location.host+'/flv?app=live&stream=preview'+snapIndex);
 			snapPlayTime=(new Date()).getTime();
