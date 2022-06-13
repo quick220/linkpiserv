@@ -33,6 +33,7 @@ include("session.php");
 </head>
 
 <body>
+    <div id="snap" style="width: 640px; height:360px; display:none;" ></div>
     <div id="toolbar">
         <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#configModal"><i class="fa fa-cog"></i></button>
         <div class="btn-group">
@@ -123,9 +124,9 @@ include("session.php");
             <div class="col-lg-10 offset-lg-1 col-md-12" style="background-color: #202020; border-radius: 0 0 10px 10px; margin-bottom: 15px; padding-top: 15px; padding-bottom: 15px;">
                 <div class="row">
                     <div class="col">
-                        <div style="width: 100%;padding-bottom: 56.25%; position: relative; margin-bottom: 15px;">
-                            <div style="position: absolute;width: 100%;height: 100%;">
-                                <video id="player" controls style="width:100%;height: 100%; background: #000;" muted></video>
+                        <div style="width: 100%;padding-bottom: 56.25%; position: relative; margin-bottom: 53px;">
+                            <div style="position: absolute;width: 100%;top:0;bottom:-38px;">
+                                <div id="player" style="width:100%;height: 100%; background: #000;" ></div>
                             </div>
                         </div>
 
@@ -636,7 +637,7 @@ include("session.php");
             </div>
         </div>
     </div>
-    <script language="javascript" src="js/flv.js"></script>
+    <script language="javascript" src="js/jessibuca.js"></script>
     <script type="text/javascript" language="javascript" src="js/confirm/jquery-confirm.min.js"></script>
     <script language="javascript" src="js/index.js"></script>
 </body>

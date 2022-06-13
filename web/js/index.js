@@ -62,17 +62,97 @@ function selectChn(i) {
 }
 
 var player = null;
+var playTime =0;
 
-
-if (flvjs.isSupported()) {
-	player = flvjs.createPlayer({
-		type: 'flv',
-		hasAudio: true,
-		url: 'http://' + window.location.host + '/flv?app=live&stream=preview0'
-	});
-	player.attachMediaElement(document.getElementById("player"));
+function stopPreview() {
+	if (player == null)
+		return;
+	player.destroy();
+	player = null;
+	playTime=0;
 }
 
+function startPreview() {
+
+	stopPreview();
+
+	if(state.length==0 || !state[index].alive || state[index].startTime <= 0)
+		return;
+
+	player = new Jessibuca({
+		container: $("#player")[0],
+		videoBuffer: 0.2, // 缓存时长
+		isResize: false,
+		text: "",
+		loadingText: "加载中",
+		debug: true,
+		showBandwidth: true, // 显示网速
+		operateBtns: {
+			fullscreen: true,
+			screenshot: false,
+			play: true,
+			audio: true,
+			record:false
+		},
+		forceNoOffscreen: true,
+		isNotMute: false,
+	},);
+	player.play('http://'+window.location.host+'/flv?app=live&stream=preview'+index);
+	playTime=(new Date()).getTime();
+}
+
+var snapIndex=0;
+var snapPlayer = null;
+var snapPlayTime =0;
+function snap(){
+	if(state.length==0)
+		return;
+
+	if(state[snapIndex].alive && state[snapIndex].startTime > 0 ){
+		if(snapPlayer==null)
+		{
+			snapPlayer = new Jessibuca({
+				container: $("#snap")[0],
+				videoBuffer: 0.2, // 缓存时长
+				isResize: false,
+				showBandwidth: false, // 显示网速
+				operateBtns: {
+					fullscreen: false,
+					screenshot: false,
+					play: false,
+					audio: false,
+					record:false
+				},
+				forceNoOffscreen: true,
+				isNotMute: false,
+			},);
+			snapPlayer.play('http://'+window.location.host+'/flv?app=live&stream=preview'+snapIndex);
+			snapPlayTime=(new Date()).getTime();
+		}
+		else{
+			if(snapPlayer.isPlaying())
+			{
+				const fileBlob = snapPlayer.screenshot("test", 'blob');
+				$(".mytab img").eq(snapIndex).attr("src", URL.createObjectURL(fileBlob));
+				snapPlayer.destroy();
+				snapPlayer = null;
+				snapPlayTime=0;
+				snapIndex=(snapIndex+1)%state.length;
+			}
+			else if((new Date()).getTime()-snapPlayTime>5000)
+			{
+				snapPlayer.destroy();
+				snapPlayer = null;
+				snapPlayTime=0;
+				snapIndex=(snapIndex+1)%state.length;
+			}
+		}
+	}
+	else{
+		snapIndex=(snapIndex+1)%state.length;
+	}
+}
+setInterval(snap,1000);
 
 $("#rcmode").change(showQP);
 
@@ -87,46 +167,6 @@ function showQP() {
 	}
 }
 
-function stopPreview() {
-	if (player == null)
-		return;
-	player.unload();
-	player.detachMediaElement();
-	player.destroy();
-	player = null;
-}
-
-function startPreview() {
-	stopPreview();
-
-	if(state.length==0 || !state[index].alive || state[index].startTime <= 0)
-		return;
-
-	player = flvjs.createPlayer({
-		type: 'flv',
-		hasAudio: true,
-		url: 'http://' + window.location.host + '/flv?app=live&stream=preview' + index
-	});
-	player.attachMediaElement(document.getElementById("player"));
-	player.load();
-	player.play();
-}
-
-function checkDelay() {
-	if (player != null && player.buffered.length > 0) {
-		console.log(player.buffered.length);
-		console.log(player.buffered.end(0) - player.currentTime);
-		if (player.buffered.end(0) - player.currentTime > 1) {
-			player.currentTime = player.buffered.end(0) - 0.2;
-		}
-	}
-
-	if (player == null || player.buffered.length <= 0) {
-		startPreview();
-	}
-}
-
-setInterval(checkDelay, 2000);
 
 $(".mytab .col").each(function (index, obj) {
 	$(obj).click(function () {
@@ -206,7 +246,7 @@ function getState() {
 			}
 
 			if (state[i].alive && state[i].startTime > 0) {
-				$(".mytab img").eq(i).attr("src", "snap/snap" + i + ".jpg?rnd=" + Math.random());
+				// $(".mytab img").eq(i).attr("src", "snap/snap" + i + ".jpg?rnd=" + Math.random());
 				$(".mytab .mytitle span").eq(i).text(Math.floor(state[i].speed * 8 / 1024) + "kb/s");
 				$(".mytab .progress-bar").eq(i).css("width", state[i].buffer + "%");
 			}
@@ -279,6 +319,9 @@ function getState() {
 
 		if(!sta.alive || sta.startTime<=0)
 			stopPreview();
+
+		if(sta.alive && sta.startTime>0 && (player==null || !player.isPlaying()) &&  (new Date()).getTime()-playTime>5000)
+			startPreview();
 
 	});
 }
