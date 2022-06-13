@@ -132,8 +132,13 @@ function snap(){
 		else{
 			if(snapPlayer.isPlaying())
 			{
-				const fileBlob = snapPlayer.screenshot("test", 'blob');
-				$(".mytab img").eq(snapIndex).attr("src", URL.createObjectURL(fileBlob));
+				// const fileBlob = snapPlayer.screenshot("test", 'blob');
+				// snapPlayer.pause();
+				var ii=snapIndex;
+				$("#snap canvas")[0].toBlob(function(blob) {
+					$(".mytab img").eq(ii).attr("src", URL.createObjectURL(blob));
+				});
+				
 				snapPlayer.destroy();
 				snapPlayer = null;
 				snapPlayTime=0;
