@@ -81,7 +81,7 @@ function startPreview() {
 
 	player = new Jessibuca({
 		container: $("#player")[0],
-		videoBuffer: 0.2, // 缓存时长
+		videoBuffer: 0.5, // 缓存时长
 		isResize: false,
 		text: "",
 		loadingText: "加载中",
