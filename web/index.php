@@ -29,7 +29,6 @@ include("session.php");
     <script src="js/bootstrap.js"></script>
     <script src="vendor/switch/bootstrap-switch.min.js"></script>
     <link href="css/index.css" rel="stylesheet" />
-    
 </head>
 
 <body>
@@ -56,6 +55,10 @@ include("session.php");
                             <h5>聚合通道1</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -67,6 +70,10 @@ include("session.php");
                             <h5>聚合通道2</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -78,6 +85,10 @@ include("session.php");
                             <h5>聚合通道3</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -89,6 +100,10 @@ include("session.php");
                             <h5>聚合通道4</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -100,6 +115,10 @@ include("session.php");
                             <h5>聚合通道5</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -111,6 +130,10 @@ include("session.php");
                             <h5>聚合通道6</h5><i class="fa fa-edit"></i><span>0kb/s</span>
                         </div>
                         <div class="myimg">
+                            <div class="battery">
+                                <div class="bat_bar"></div>
+                                <div class="bat_txt"></div>
+                            </div>
                             <img src="/img/nosignal.jpg" class="img-fluid">
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -510,6 +533,19 @@ include("session.php");
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <hr style="margin-top:10px; margin-bottom: 10px;" />
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label"><cn>麦克风增益</cn><en>Mic gain</en></label>
+                                                        <div class="col-8">
+                                                            <select zcfg="intercom.gain" class="form-control bg-dark text-white">
+                                                                <option value="24">24db</option>
+                                                                <option value="18">18db</option>
+                                                                <option value="12">12db</option>
+                                                                <option value="6">6db</option>
+                                                                <option value="0">0db</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             </div>
                                             <div class="col px-0">
@@ -536,11 +572,19 @@ include("session.php");
                                                         <label class="col-4 text-right col-form-label"><cn>自动静音</cn><en>VAD</en></label>
                                                         <div class="col-8">
                                                             <select zcfg="intercom.vad" class="form-control bg-dark text-white">
-                                                                <option value="0">关闭</option>
-                                                                <option value="40">低</option>
-                                                                <option value="50">中</option>
-                                                                <option value="65">高</option>
+                                                                <option value="-1" cn="按键发言" en="Press to speak"></option>
+                                                                <option value="0" cn="常开" en="Keep open"></option>
+                                                                <option value="40" cn="低" en="Low"></option>
+                                                                <option value="50" cn="中" en="Mid"></option>
+                                                                <option value="65" cn="高" en="High"></option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <hr style="margin-top:10px; margin-bottom: 10px;" />
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label">Tally</label>
+                                                        <div class="col-8">
+                                                        <input type="checkbox" zcfg="intercom.tally" class="switch form-control bg-dark text-white">
                                                         </div>
                                                     </div>
                                                 </form>

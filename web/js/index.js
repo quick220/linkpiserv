@@ -262,6 +262,17 @@ function getState() {
 				$(".mytab .progress-bar").eq(i).css("width", 0);
 			}
 
+			if (state[i].alive && state[i].bat != undefined )
+			{
+				$(".mytab .battery .bat_bar").eq(i).css("width",(state[i].bat.val*40/100)+"px");
+				$(".mytab .battery .bat_txt").eq(i).text((state[i].bat.crg?"~":"")+Math.round(state[i].bat.val));
+				$(".mytab .battery").eq(i).show();
+			}
+			else
+			{
+				$(".mytab .battery").eq(i).hide();
+			}
+
 		}
 
 		var sta = state[index];
