@@ -24,6 +24,7 @@ include("session.php");
     <script src="js/jquery.min.js"></script>
     <script src="js/global.js"></script>
     <script src="js/zcfg.js"></script>
+    <script src="js/flv.js"></script>
     <script src="js/jquery.jsonrpcclient.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -150,6 +151,7 @@ include("session.php");
                         <div style="width: 100%;padding-bottom: 56.25%; position: relative; margin-bottom: 53px;">
                             <div style="position: absolute;width: 100%;top:0;bottom:-38px;">
                                 <div id="player" style="width:100%;height: 100%; background: #000;" ></div>
+                                <video id="player_264" controls style="width:100%;height: 100%; background: #000; display:none;" muted></video>
                             </div>
                         </div>
 

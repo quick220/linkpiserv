@@ -62,56 +62,92 @@ function selectChn(i) {
 }
 
 var player = null;
-var playTime =0;
+var playTime = 0;
 
 function stopPreview() {
 	if (player == null)
 		return;
-	player.destroy();
+	if (player.detachMediaElement == undefined) {
+
+		player.destroy();
+	}
+	else {
+		player.unload();
+		player.detachMediaElement();
+		player.destroy();
+	}
 	player = null;
-	playTime=0;
+	playTime = 0;
 }
 
 function startPreview() {
 
 	stopPreview();
 
-	if(state.length==0 || !state[index].alive || state[index].startTime <= 0)
+	if (state.length == 0 || !state[index].alive || state[index].startTime <= 0)
 		return;
 
-	player = new Jessibuca({
-		container: $("#player")[0],
-		videoBuffer: 0.5, // 缓存时长
-		isResize: false,
-		text: "",
-		loadingText: "加载中",
-		debug: true,
-		showBandwidth: true, // 显示网速
-		operateBtns: {
-			fullscreen: true,
-			screenshot: false,
-			play: true,
-			audio: true,
-			record:false
-		},
-		forceNoOffscreen: true,
-		isNotMute: false,
-		//useMSE: (state[index].codec!="h265"),
-	},);
-	player.play('http://'+window.location.host+'/flv?app=live&stream=preview'+index);
-	playTime=(new Date()).getTime();
+	if (state[index].codec == "h265") {
+		player = new Jessibuca({
+			container: $("#player")[0],
+			videoBuffer: 0.5, // 缓存时长
+			isResize: false,
+			text: "",
+			loadingText: "加载中",
+			debug: true,
+			showBandwidth: true, // 显示网速
+			operateBtns: {
+				fullscreen: true,
+				screenshot: false,
+				play: true,
+				audio: true,
+				record: false
+			},
+			forceNoOffscreen: true,
+			isNotMute: false,
+			//useMSE: (state[index].codec!="h265"),
+		});
+		$("#player_264").hide();
+		$("#player").show();
+		player.play('http://' + window.location.host + '/flv?app=live&stream=preview' + index);
+	}
+	else {
+		player = flvjs.createPlayer({
+            type: 'flv',
+            hasAudio: true,
+            url: 'http://'+window.location.host+'/flv?app=live&stream=preview'+index
+        });
+		$("#player_264").show();
+		$("#player").hide();
+
+        player.attachMediaElement(document.getElementById("player_264"));
+        player.load();
+        player.play();
+	}
+
+	playTime = (new Date()).getTime();
 }
 
-var snapIndex=0;
+function checkDelay() {
+	if(player == null || player.detachMediaElement == undefined)
+		return;
+	if (player.buffered.length > 0) {
+		if (player.buffered.end(0) - player.currentTime > 1) {
+			player.currentTime = player.buffered.end(0) - 0.2;
+		}
+	}
+}
+setInterval(checkDelay, 2000);
+
+var snapIndex = 0;
 var snapPlayer = null;
-var snapPlayTime =0;
-function snap(){
-	if(state.length==0)
+var snapPlayTime = 0;
+function snap() {
+	if (state.length == 0)
 		return;
 
-	if(state[snapIndex].alive && state[snapIndex].startTime > 0 ){
-		if(snapPlayer==null)
-		{
+	if (state[snapIndex].alive && state[snapIndex].startTime > 0) {
+		if (snapPlayer == null) {
 			snapPlayer = new Jessibuca({
 				container: $("#snap")[0],
 				videoBuffer: 0.2, // 缓存时长
@@ -122,43 +158,41 @@ function snap(){
 					screenshot: false,
 					play: false,
 					audio: false,
-					record:false
+					record: false
 				},
 				forceNoOffscreen: true,
 				isNotMute: false
-			},);
-			snapPlayer.play('http://'+window.location.host+'/flv?app=live&stream=preview'+snapIndex);
-			snapPlayTime=(new Date()).getTime();
+			});
+			snapPlayer.play('http://' + window.location.host + '/flv?app=live&stream=preview' + snapIndex);
+			snapPlayTime = (new Date()).getTime();
 		}
-		else{
-			if(snapPlayer.isPlaying())
-			{
+		else {
+			if (snapPlayer.isPlaying()) {
 				// const fileBlob = snapPlayer.screenshot("test", 'blob');
 				// snapPlayer.pause();
-				var ii=snapIndex;
-				$("#snap canvas")[0].toBlob(function(blob) {
+				var ii = snapIndex;
+				$("#snap canvas")[0].toBlob(function (blob) {
 					$(".mytab img").eq(ii).attr("src", URL.createObjectURL(blob));
 				});
-				
+
 				snapPlayer.destroy();
 				snapPlayer = null;
-				snapPlayTime=0;
-				snapIndex=(snapIndex+1)%state.length;
+				snapPlayTime = 0;
+				snapIndex = (snapIndex + 1) % state.length;
 			}
-			else if((new Date()).getTime()-snapPlayTime>5000)
-			{
+			else if ((new Date()).getTime() - snapPlayTime > 5000) {
 				snapPlayer.destroy();
 				snapPlayer = null;
-				snapPlayTime=0;
-				snapIndex=(snapIndex+1)%state.length;
+				snapPlayTime = 0;
+				snapIndex = (snapIndex + 1) % state.length;
 			}
 		}
 	}
-	else{
-		snapIndex=(snapIndex+1)%state.length;
+	else {
+		snapIndex = (snapIndex + 1) % state.length;
 	}
 }
-setInterval(snap,1000);
+setInterval(snap, 1000);
 
 $("#rcmode").change(showQP);
 
@@ -262,14 +296,12 @@ function getState() {
 				$(".mytab .progress-bar").eq(i).css("width", 0);
 			}
 
-			if (state[i].alive && state[i].bat != undefined )
-			{
-				$(".mytab .battery .bat_bar").eq(i).css("width",(state[i].bat.val*40/100)+"px");
-				$(".mytab .battery .bat_txt").eq(i).text((state[i].bat.crg?"~":"")+Math.round(state[i].bat.val));
+			if (state[i].alive && state[i].bat != undefined) {
+				$(".mytab .battery .bat_bar").eq(i).css("width", (state[i].bat.val * 40 / 100) + "px");
+				$(".mytab .battery .bat_txt").eq(i).text((state[i].bat.crg ? "~" : "") + Math.round(state[i].bat.val));
 				$(".mytab .battery").eq(i).show();
 			}
-			else
-			{
+			else {
 				$(".mytab .battery").eq(i).hide();
 			}
 
@@ -334,11 +366,15 @@ function getState() {
 		}
 
 
-		if(!sta.alive || sta.startTime<=0)
+		if (!sta.alive || sta.startTime <= 0)
 			stopPreview();
 
-		if(sta.alive && sta.startTime>0 && (player==null || !player.isPlaying()) &&  (new Date()).getTime()-playTime>5000)
-			startPreview();
+		if (sta.alive && sta.startTime > 0 && (new Date()).getTime() - playTime > 5000)
+		{
+			if( player == null || (player.isPlaying!=undefined && !player.isPlaying()) || (player.isPlaying==undefined && player.buffered.length<=0) )
+				startPreview();
+		}
+			
 
 	});
 }
@@ -390,38 +426,35 @@ function updateTime() {
 }
 
 setInterval(updateTime, 100);
-function hideSvrConfig()
-{
+function hideSvrConfig() {
 	$('#configModal').modal('hide');
 }
 $("#setServer").click(function (e) {
-	if($("#svr_sls").hasClass("active"))
-	{
-		func("saveConfigFile", {path: "config/sls.conf",data:$("#sls_config").val()},function( res ) {
-			if ( res.error != "" )
-				htmlAlert( "#alertSvr", "danger", res.error, "", 2000 );
+	if ($("#svr_sls").hasClass("active")) {
+		func("saveConfigFile", { path: "config/sls.conf", data: $("#sls_config").val() }, function (res) {
+			if (res.error != "")
+				htmlAlert("#alertSvr", "danger", res.error, "", 2000);
 			else
-				htmlAlert( "#alertSvr", "success", "设置成功！", "", 2000 );
-		});	
+				htmlAlert("#alertSvr", "success", "设置成功！", "", 2000);
+		});
 	}
-	else if($("#svr_pwd").hasClass("active"))
-	{
-		func( "setPasswd", $( "#passwd" ).serialize(), function ( res ) {
-			if ( res.error != "" )
-				htmlAlert( "#alertSvr", "danger", res.error, "", 2000 );
+	else if ($("#svr_pwd").hasClass("active")) {
+		func("setPasswd", $("#passwd").serialize(), function (res) {
+			if (res.error != "")
+				htmlAlert("#alertSvr", "danger", res.error, "", 2000);
 			else
-				htmlAlert( "#alertSvr", "success", "修改密码成功！", "", 2000 );
-		} );
+				htmlAlert("#alertSvr", "success", "修改密码成功！", "", 2000);
+		});
 	}
 
-	setTimeout(hideSvrConfig,2000);
-	
-	
+	setTimeout(hideSvrConfig, 2000);
+
+
 });
 
-$.ajax( {
+$.ajax({
 	url: "config/sls.conf",
-	success: function ( data ) {
+	success: function (data) {
 		$("#sls_config").val(data);
 	}
-} ).responseText;
+}).responseText;
