@@ -18,5 +18,6 @@ apt install libqt5core5a libqt5network5 libqt5test5 libqt5websockets5 php-fpm -y
 
 cp /link/config/www.conf /etc/php/7.2/fpm/pool.d/www.conf
 cp ./lib/* /usr/lib/ -a
+chmod 777 /link/config/ -R
 
 sync
