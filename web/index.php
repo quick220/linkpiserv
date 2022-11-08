@@ -280,7 +280,7 @@ include("session.php");
                                 </div>
                             </div>
                         </div>
-                        <div class="card dark mb-3 text-center">
+                        <div class="card dark mb-3 text-center" style="position:relative;">
                             <div id="time" style="font-size: 4rem; ">[00:00:00.0]</div>
                             <div class=" text-center" style="padding-bottom: 15px;">
                                 <button type="button" id="startPush" class="btn btn-warning col-3">
@@ -292,6 +292,10 @@ include("session.php");
                                     <cn>停止</cn><en>Stop</en>
                                 </button>
                             </div>
+                            <button type="button" id="reboot" class="btn btn-warning" style="position:absolute; right:10px;bottom:10px; font-size:0.7rem;">
+                                    <i class="fa fa-rotate-left"></i>
+                                    <cn>重启</cn><en>Reboot</en>
+                            </button>
                         </div>
                         <div class="card dark mb-3">
                             <div class="card-header" style="padding: 0;">

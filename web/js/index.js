@@ -220,6 +220,39 @@ $("#setConfig").click(function (e) {
 	});
 });
 
+$("#reboot").click(function (e) {
+	var cmd={};
+	cmd.func="reboot";
+	cmd.args="";
+	$.confirm({
+		title: '重启设备',
+		content: '是否立即重启设备？',
+		buttons: {
+			ok: {
+				text: "确认重启",
+				btnClass: 'btn-warning',
+				type: 'dark',
+				keys: ['enter'],
+				action: function () {
+					rpc("stopPush", [index]);
+					stopPreview();
+					rpc("sendCmd", [index, cmd], function (data) {
+					});
+				}
+			},
+			cancel: {
+				text: "取消",
+				action: function () {
+					console.log('the user clicked cancel');
+				}
+			}
+
+		}
+	});
+	return false;
+	
+});
+
 function save() {
 	$('#exampleModal').modal('hide');
 	rpc("updateChn", [index, config[index]], function (data) {
