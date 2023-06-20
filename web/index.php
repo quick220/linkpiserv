@@ -149,9 +149,15 @@ include("session.php");
                 <div class="row">
                     <div class="col">
                         <div style="width: 100%;padding-bottom: 56.25%; position: relative; margin-bottom: 53px;">
+                        
                             <div style="position: absolute;width: 100%;top:0;bottom:-38px;">
                                 <div id="player" style="width:100%;height: 100%; background: #000;" ></div>
                                 <video id="player_264" controls style="width:100%;height: 100%; background: #000; display:none;" muted></video>
+                            </div>
+                            <div style="position: absolute;width: 200px;top:15px;right:15px; " class="text-right">
+                                <button type="button" id="stopPlay" class="btn btn-warning">
+                                        STOP
+                                </button>
                             </div>
                         </div>
 
@@ -524,6 +530,14 @@ include("session.php");
                                                                 <option value="6">6</option>
                                                                 <option value="7">7</option>
                                                                 <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -570,6 +584,14 @@ include("session.php");
                                                                 <option value="6">6</option>
                                                                 <option value="7">7</option>
                                                                 <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
                                                             </select>
                                                         </div>
                                                     </div>

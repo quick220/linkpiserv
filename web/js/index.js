@@ -4,6 +4,7 @@ var config = {};
 var clientConfig = {};
 var state = [];
 var index = 0;
+var stopPrev = false;
 $.getJSON("config/MPConfig.json", function (result) {
 	config = result;
 	for (var i = 0; i < config.length; i++) {
@@ -84,7 +85,7 @@ function startPreview() {
 
 	stopPreview();
 
-	if (state.length == 0 || !state[index].alive || state[index].startTime <= 0)
+	if (stopPrev || state.length == 0 || !state[index].alive || state[index].startTime <= 0)
 		return;
 
 	if (state[index].codec == "h265") {
@@ -268,6 +269,21 @@ $("#startPush").click(function (e) {
 	startPreview();
 });
 
+$("#stopPlay").click(function (e) {
+	stopPrev=!stopPrev;
+	if(stopPrev)
+	{
+		$("#stopPlay").text("PLAY");
+		stopPreview();
+	}		
+	else
+	{
+		$("#stopPlay").text("STOP");
+		startPreview();
+	}
+		
+});
+
 $("#stopPush").click(function (e) {
 	$.confirm({
 		title: '停止推流',
@@ -404,8 +420,10 @@ function getState() {
 
 		if (sta.alive && sta.startTime > 0 && (new Date()).getTime() - playTime > 5000)
 		{
-			if( player == null || (player.isPlaying!=undefined && !player.isPlaying()) || (player.isPlaying==undefined && player.buffered.length<=0) )
-				startPreview();
+			if( player == null || (player.isPlaying!=undefined && !player.isPlaying()) || (player.isPlaying==undefined && player.buffered.length<=0) ){
+					startPreview();
+			}
+				
 		}
 			
 
@@ -438,9 +456,9 @@ function updateTime() {
 		$("#stopPush").addClass("btn-warning");
 		$("#stopPush").removeClass("btn-default");
 		$("#stopPush").removeAttr("disabled");
-		$("#setConfig").attr("disabled", "disabled");
-		$("#setConfig").addClass("btn-default");
-		$("#setConfig").removeClass("btn-warning");
+		// $("#setConfig").attr("disabled", "disabled");
+		// $("#setConfig").addClass("btn-default");
+		// $("#setConfig").removeClass("btn-warning");
 	}
 	else {
 		$("#time").text("[00:00:00.0]");
@@ -452,9 +470,9 @@ function updateTime() {
 		$("#startPush").addClass("btn-warning");
 		$("#startPush").removeClass("btn-default");
 		$("#startPush").removeAttr("disabled");
-		$("#setConfig").removeAttr("disabled");
-		$("#setConfig").addClass("btn-warning");
-		$("#setConfig").removeClass("btn-default");
+		// $("#setConfig").removeAttr("disabled");
+		// $("#setConfig").addClass("btn-warning");
+		// $("#setConfig").removeClass("btn-default");
 	}
 }
 

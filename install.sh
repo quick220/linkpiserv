@@ -10,7 +10,7 @@ if [ `grep -c "/link/shell/init.sh" /etc/rc.local` -eq '0' ];then
     echo -e "\n/link/shell/init.sh &\n" >> /etc/rc.local
 fi
 
-apt install libqt5core5a libqt5network5 libqt5test5 libqt5websockets5 php-fpm -y
+apt install libqt5core5a libqt5network5 libqt5test5 libqt5websockets5 php-fpm ntp -y
 
 #if [ `grep -c "rtmp.conf" /etc/nginx/nginx.conf` -eq '0' ];then
 #    echo -e "\ninclude /link/config/rtmp.conf;\n" >> /etc/nginx/nginx.conf
