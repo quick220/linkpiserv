@@ -159,6 +159,52 @@ include("session.php");
                                         STOP
                                 </button>
                             </div>
+                            <div id="ptzFrame">
+                                <div class="row text-center">
+                                    <div class="col-4"></div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-warning" id="ptz_up">
+                                        <i class="fa fa-chevron-circle-up"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-warning" id="ptz_zoom_in">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                <div class="col-4">
+                                    <button type="button" class=" btn btn-warning"  id="ptz_left">
+                                        <i class="fa fa-chevron-circle-left"></i>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class=" btn btn-warning"  id="ptz_home">
+                                        <i class="fa fa-home"></i>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class=" btn btn-warning"  id="ptz_right">
+                                        <i class="fa fa-chevron-circle-right"></i>
+                                    </button>
+                                </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-4"></div>
+                                    <div class="col-4">
+                                        <button type="button" class=" btn btn-warning" id="ptz_down">
+                                        <i class="fa fa-chevron-circle-down"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-4">
+                                        
+                                        <button type="button" class="btn btn-warning" id="ptz_zoom_out">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="card dark">
@@ -193,23 +239,14 @@ include("session.php");
                     </div>
                     <div class="col">
                         <div class="card dark mb-3 text-center" style="padding: 20px 0;">
-                            <div class="row mx-0 text-center">
-                                <div class="col px-0 myicon active">
-                                    <div class="t">SDI</div>
+                            <div id="stateBar" class="row mx-0 text-center">
+                                <div id="input" class="col px-0 myicon ">
+                                    <div class="t">Cam</div>
                                     <div class="m">
-                                        <img src="img/sdi.png" alt="">
+                                        <img src="img/cam.png" alt="">
                                     </div>
                                     <div class="b">
-                                        1080P60
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
-                                    <div class="t">HDMI</div>
-                                    <div class="m">
-                                        <img src="img/hdmi.png" alt="">
-                                    </div>
-                                    <div class="b">
-                                        - - -
+                                        1080P30
                                     </div>
                                 </div>
                                 <div class="col px-0 myicon">
@@ -230,52 +267,7 @@ include("session.php");
                                         0kb
                                     </div>
                                 </div>
-                                <div class="col px-0 myicon active">
-                                    <div class="t">中国移动</div>
-                                    <div class="m">
-                                        <span id="lte"><span class="svr">4G</span></span>
-                                    </div>
-                                    <div class="b">
-                                        0kb
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
-                                    <div class="t">中国移动</div>
-                                    <div class="m">
-                                        <span id="lte"><span class="svr">4G</span></span>
-                                    </div>
-                                    <div class="b">
-                                        0kb
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
-                                    <div class="t">中国移动</div>
-                                    <div class="m">
-                                        <span id="lte"><span class="svr">4G</span></span>
-                                    </div>
-                                    <div class="b">
-                                        0kb
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
-                                    <div class="t">中国移动</div>
-                                    <div class="m">
-                                        <span id="lte"><span class="svr">4G</span></span>
-                                    </div>
-                                    <div class="b">
-                                        0kb
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
-                                    <div class="t">中国移动</div>
-                                    <div class="m">
-                                        <span id="lte"><span class="svr">4G</span></span>
-                                    </div>
-                                    <div class="b">
-                                        0kb
-                                    </div>
-                                </div>
-                                <div class="col px-0 myicon">
+                                <div  class="col px-0 myicon active">
                                     <div class="t">中国移动</div>
                                     <div class="m">
                                         <span id="lte"><span class="svr">4G</span></span>
@@ -329,7 +321,7 @@ include("session.php");
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>码率</cn><en>Bitrate</en></label>
                                                         <div class="col-8">
-                                                            <input type="text" zcfg="encode.encV_cfg[0].bitrate" class="form-control bg-dark text-white">
+                                                            <input type="text" zcfg="encode.encV.bitrate" class="form-control bg-dark text-white">
                                                         </div>
                                                     </div>
                                                     <hr style="margin-top:10px; margin-bottom: 10px;" />
@@ -363,7 +355,7 @@ include("session.php");
                                                         <div class="form-group row">
                                                             <label class="col-4 text-right col-form-label">minQP</label>
                                                             <div class="col-8">
-                                                                <input type="text" zcfg="encode.encV_cfg[0].minqp" class="form-control bg-dark text-white">
+                                                                <input type="text" zcfg="encode.encV.minqp" class="form-control bg-dark text-white">
                                                             </div>
                                                         </div>
                                                         <hr style="margin-top:10px; margin-bottom: 10px;" />
@@ -371,7 +363,7 @@ include("session.php");
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label">GOP<cn>(秒)</cn><en>(Sec)</en></label>
                                                         <div class="col-8">
-                                                            <input type="text" zcfg="encode.encV_cfg[0].gop" class="form-control bg-dark text-white">
+                                                            <input type="text" zcfg="encode.encV.gop" class="form-control bg-dark text-white">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -382,7 +374,7 @@ include("session.php");
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>帧率</cn><en>Framerate</en></label>
                                                         <div class="col-8">
-                                                            <input type="text" zcfg="encode.encV_cfg[0].framerate" class="form-control bg-dark text-white">
+                                                            <input type="text" zcfg="encode.encV.framerate" class="form-control bg-dark text-white">
                                                         </div>
                                                     </div>
                                                     <hr style="margin-top:10px; margin-bottom: 10px;" />
@@ -401,7 +393,7 @@ include("session.php");
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>码率控制</cn><en>Rate control</en></label>
                                                         <div class="col-8">
-                                                            <select zcfg="encode.encV_cfg[0].rcmode" id="rcmode" class="form-control bg-dark text-white">
+                                                            <select zcfg="encode.encV.rcmode" id="rcmode" class="form-control bg-dark text-white">
                                                                 <option value="avbr">AVBR</option>
                                                                 <option value="vbr">VBR</option>
                                                                 <option value="cbr">CBR</option>
@@ -413,7 +405,7 @@ include("session.php");
                                                         <div class="form-group row">
                                                             <label class="col-4 text-right col-form-label">maxQP</label>
                                                             <div class="col-8">
-                                                                <input type="text" zcfg="encode.encV_cfg[0].maxqp" class="form-control bg-dark text-white">
+                                                                <input type="text" zcfg="encode.encV.maxqp" class="form-control bg-dark text-white">
                                                             </div>
                                                         </div>
                                                         <hr style="margin-top:10px; margin-bottom: 10px;" />
@@ -452,7 +444,7 @@ include("session.php");
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>码率</cn><en>bitrate</en></label>
                                                         <div class="col-8">
-                                                            <input type="text" zcfg="encode.encA_cfg[0].bitrate" class="form-control bg-dark text-white">
+                                                            <input type="text" zcfg="encode.encA.bitrate" class="form-control bg-dark text-white">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -490,6 +482,12 @@ include("session.php");
                                             <div class="col px-0">
                                                 <form>
                                                     <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label"><cn>服务器</cn><en>Server </en>IP</label>
+                                                        <div class="col-8">
+                                                            <input type="text" zcfg="buffer.svrIP" class="form-control bg-dark text-white">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>算法策略</cn><en>Algorithm policy</en></label>
                                                         <div class="col-8">
                                                             <select zcfg="buffer.mode" class="form-control bg-dark text-white">
@@ -503,6 +501,19 @@ include("session.php");
                                             </div>
                                             <div class="col px-0">
                                                 <form>
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label"><cn>通道</cn><en>Channel</en></label>
+                                                        <div class="col-8">
+                                                            <select zcfg="buffer.channel" class="form-control bg-dark text-white">
+                                                                <option value="1" cn="通道1" en="Channel 1"></option>
+                                                                <option value="2" cn="通道2" en="Channel 2"></option>
+                                                                <option value="3" cn="通道3" en="Channel 3"></option>
+                                                                <option value="4" cn="通道4" en="Channel 4"></option>
+                                                                <option value="5" cn="通道5" en="Channel 5"></option>
+                                                                <option value="6" cn="通道6" en="Channel 6"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group row">
                                                         <label class="col-4 text-right col-form-label"><cn>延迟</cn><en>Latency</en></label>
                                                         <div class="col-8">

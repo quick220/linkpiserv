@@ -18,19 +18,25 @@ $.getJSON("config/MPConfig.json", function (result) {
 	});
 
 	selectChn(0);
-
 	getState();
 	setInterval(getSpeed, 2000);
 	setInterval(getState, 1000);
 });
 
 function getConfig() {
+	clientConfig={};
 	rpc("getConfig", [index], function (data) {
 		if (data.encode == undefined) {
 			setTimeout(getConfig, 300);
 		}
 		else {
 			clientConfig = data;
+			if(clientConfig.version==undefined)
+			{
+				clientConfig.encode.encV=Object.assign(clientConfig.encode.encV, clientConfig.encode.encV_cfg[0]);
+				clientConfig.encode.encA=Object.assign(clientConfig.encode.encA, clientConfig.encode.encA_cfg[0]);
+				clientConfig.buffer.channel=clientConfig.buffer.svrPort-6000+1;
+			}
 			zcfg("#myTabContent", clientConfig);
 			showQP();
 		}
@@ -264,6 +270,57 @@ function save() {
 $("#save").click(save);
 $("#saveName").click(save);
 
+var ptzInterval=0;
+var ptzCurP=0;
+var ptzCurT=0;
+var ptzCurZ=0;
+var ptzSpeed=1;
+var ptzDelay=200;
+function ptzCtrl(func,val){
+	var cmd={};
+	cmd.func="ptzCtrl";
+	var args={};
+	args.func=func;
+	args.val=val;
+	cmd.args=args;
+	rpc("sendCmd", [index, cmd]);
+}
+function ptzStop(){
+	clearInterval(ptzInterval);
+	ptzInterval=0;
+}
+
+$("#ptz_up").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_t",ptzSpeed*3600);', ptzDelay);
+});
+$("#ptz_down").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_t",-ptzSpeed*3600);', ptzDelay);
+});
+$("#ptz_left").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_p",-ptzSpeed*3600);', ptzDelay);
+});
+$("#ptz_right").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_p",ptzSpeed*3600);', ptzDelay);
+});
+$("#ptz_zoom_in").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_z",ptzSpeed*2);', ptzDelay);
+});
+$("#ptz_zoom_out").mousedown(function (e) {
+	ptzInterval=setInterval('ptzCtrl("ptz_rlt_z",-ptzSpeed*2);', ptzDelay);
+});
+
+
+$("#ptzFrame button").each(function(index,obj){
+	$(obj).mouseup(ptzStop);
+	$(obj).mouseout(ptzStop);
+});
+
+$("#ptz_home").mousedown(function (e) {
+	ptzCtrl("ptz_abs_p",0);
+	setTimeout('ptzCtrl("ptz_abs_t",0);', 200);
+	setTimeout('ptzCtrl("ptz_abs_z",100);', 400);
+});
+
 $("#startPush").click(function (e) {
 	rpc("startPush", [index]);
 	startPreview();
@@ -323,6 +380,7 @@ function getSpeed() {
 }
 
 function getState() {
+	
 	rpc("getState", null, function (data) {
 		state = data;
 		//console.log(data);
@@ -356,62 +414,128 @@ function getState() {
 
 		}
 
+		if(Object.keys(clientConfig).length==0)
+			return;
+		
 		var sta = state[index];
 		if (sta.alive) {
-			for (var i = 0; i < 2; i++) {
-				var iface = {};
-				if (i == 0)
-					iface = sta.iface.sdi;
-				else if (i == 1)
-					iface = sta.iface.hdmi;
+			if(clientConfig.version==undefined)
+			{
+				var iface={};
+				sta.input={};
+				if(sta.iface.sdi.s)
+				{
+					iface=sta.iface.sdi;
+					sta.input.type="sdi";
+					sta.input.avalible=true;
+				}
+				else if(sta.iface.hdmi.s)
+				{
+					iface=sta.iface.hdmi;
+					sta.input.type="hdmi";
+					sta.input.avalible=true;
+				}
+				else{
+					sta.input.type="hdmi";
+					sta.input.avalible=false;
+				}
 
-				if (iface.s) {
-					$(".myicon").eq(i).addClass("active");
-					$(".myicon .b").eq(i).text(iface.h + (iface.i ? "I" : "P") + iface.f);
-				}
-				else {
-					$(".myicon").eq(i).removeClass("active");
-					$(".myicon .b").eq(i).text("- - -");
-				}
+				if(sta.input.avalible)
+				{
+					sta.input.width=iface.w;
+					sta.input.height=iface.h;
+					sta.input.framerate=iface.f;
+					sta.input.interlace=iface.i;
+				}				
 			}
 
-			var net = sta.net;
-			for (var i = 0; i < net.length; i++) {
-				var k = i + 2;
-				if (net[i].a) {
-					$(".myicon").eq(k).addClass("active");
-					if (net[i].t != undefined)
-						$(".myicon .t").eq(k).text(net[i].t);
-					if (net[i].o != undefined)
-						$(".myicon").eq(k).find(".svr").text(net[i].o);
-
-					$(".myicon .b").eq(k).text(net[i].tx + "kb");
-				}
-				else {
-					$(".myicon").eq(k).removeClass("active");
-					if (i > 0)
-						$(".myicon .t").eq(k).text("- - -");
-					if (i > 1)
-						$(".myicon").eq(k).find(".svr").text("X");
-
-					$(".myicon .b").eq(k).text("- - -");
-
-				}
-
-				if (i == 1) {
-					if (net[i].a)
-						$(".myicon").eq(k).find("#wifi").css("background-position-y", (-5 - (4 - net[i].s) * 50) + "px");
-					else
-						$(".myicon").eq(k).find("#wifi").css("background-position-y", "-5px");
-				}
-				else if (i > 1) {
-					if (net[i].a)
-						$(".myicon").eq(k).find("#lte").css("background-position-y", (-5 - (5 - net[i].s) * 50) + "px");
-					else
-						$(".myicon").eq(k).find("#lte").css("background-position-y", "-5px");
-				}
-
+			if(sta.input.avalible)
+			{
+				$("#input").addClass("active");
+				$("#input .b").text(sta.input.height + (sta.input.interlace ? "I" : "P") + sta.input.framerate);
+			}				
+			else
+			{
+				$("#input").removeClass("active");
+				$("#input .b").text("- - -");
 			}
+			$("#input .t").text(sta.input.type.toUpperCase());
+			$("#input img").attr("src","img/"+sta.input.type+".png");
+
+			if(sta.net!=undefined)
+			{
+				var net = sta.net;
+				if(clientConfig.version==undefined)
+				{
+					for (var i = 0; i < net.length; i++) {
+						if(i==0)
+							net[i].type="lan"
+						else if(i==1)
+							net[i].type="wifi"
+						else
+							net[i].type="dongle"
+					}
+				}
+
+				
+				while($("#stateBar").children().length-3<net.length-2)
+				{
+					$("#stateBar").append($("#stateBar").children().last().prop("outerHTML"));
+				}
+
+				while($("#stateBar").children().length-3>net.length-2)
+				{
+					$("#stateBar").children().last().remove();
+				}
+
+				var lteCnt=0;
+				for (var i = 0; i < net.length; i++) {
+					var k;
+					if(net[i].type=="lan")
+						k = 1;
+					else if(net[i].type=="wifi")
+						k = 2;
+					else{
+						lteCnt++;
+						k=2+lteCnt;
+					}
+
+					if (net[i].a>0) {
+						$(".myicon").eq(k).addClass("active");
+						if (net[i].t != undefined)
+							$(".myicon .t").eq(k).text(net[i].t);
+						if (net[i].o != undefined)
+							$(".myicon").eq(k).find(".svr").text(net[i].o);
+
+						$(".myicon .b").eq(k).text(net[i].tx + "kb");
+					}
+					else {
+						$(".myicon").eq(k).removeClass("active");
+						if (i > 0)
+							$(".myicon .t").eq(k).text("- - -");
+						if (i > 1)
+							$(".myicon").eq(k).find(".svr").text("X");
+
+						$(".myicon .b").eq(k).text("- - -");
+
+					}
+
+					if (net[i].type=="wifi") {
+						if (net[i].a>0)
+							$(".myicon").eq(k).find("#wifi").css("background-position-y", (-5 - (4 - net[i].s) * 50) + "px");
+						else
+							$(".myicon").eq(k).find("#wifi").css("background-position-y", "-5px");
+					}
+					else if (net[i].type=="dongle") {
+						if (net[i].a>0)
+							$(".myicon").eq(k).find("#lte").css("background-position-y", (-5 - (5 - net[i].s) * 50) + "px");
+						else
+							$(".myicon").eq(k).find("#lte").css("background-position-y", "-5px");
+					}
+
+				}
+			}
+			
 		}
 
 
