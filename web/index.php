@@ -267,6 +267,8 @@ include("session.php");
                                         0kb
                                     </div>
                                 </div>
+                            </div>
+                            <div style="display: none;" id="stateBar_LTE">
                                 <div  class="col px-0 myicon active">
                                     <div class="t">中国移动</div>
                                     <div class="m">

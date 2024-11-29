@@ -491,7 +491,7 @@ function getState() {
 				
 				while($("#stateBar").children().length-3<net.length-2)
 				{
-					$("#stateBar").append($("#stateBar").children().last().prop("outerHTML"));
+					$("#stateBar").append($("#stateBar_LTE").children().last().prop("outerHTML"));
 				}
 
 				while($("#stateBar").children().length-3>net.length-2)
