@@ -223,6 +223,17 @@ $(".mytab .col").each(function (index, obj) {
 });
 
 $("#setConfig").click(function (e) {
+	if(clientConfig.version==undefined)
+	{
+		clientConfig.encode.encV_cfg[0].bitrate=clientConfig.encode.encV.bitrate;
+		clientConfig.encode.encV_cfg[0].minqp=clientConfig.encode.encV.minqp;
+		clientConfig.encode.encV_cfg[0].gop=clientConfig.encode.encV.gop;
+		clientConfig.encode.encV_cfg[0].framerate=clientConfig.encode.encV.framerate;
+		clientConfig.encode.encV_cfg[0].rcmode=clientConfig.encode.encV.rcmode;
+		clientConfig.encode.encV_cfg[0].maxqp=clientConfig.encode.encV.maxqp;
+		clientConfig.encode.encA_cfg[0].bitrate=clientConfig.encode.encA.bitrate;
+		clientConfig.buffer.svrPort=clientConfig.buffer.channel+6000-1;
+	}
 	rpc("setConfig", [index, clientConfig], function (data) {
 	});
 });
