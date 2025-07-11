@@ -43,6 +43,53 @@ function getConfig() {
 	});
 }
 
+function getWifi()
+{
+	rpc("getWifi", [index], function (data) {
+		if (data.state == undefined) {
+			setTimeout(getWifi, 300);
+			return;
+		}
+
+		$("#curSSID").val(data.state.ssid);
+		var retList=data.list;
+		var list=[];
+		for(var i=0;i<retList.length;i++)
+		{
+			list.push(retList[i].ssid);
+		}
+		console.log($("#ssidList").children().length);
+		console.log(list);
+		if(list.length!=$("#ssidList").children().length)
+		{
+			var str='';
+			for(var i=0;i<list.length;i++)
+			{
+				str+='<option value="'+list[i]+'">'+list[i]+'</option>';
+			}
+			$("#ssidList").html(str);
+		}
+	});
+}
+
+function setWifi()
+{
+	var arg={};
+	arg.ssid=$("#ssidList").val();
+	arg.passwd=$("#wifiPasswd").val();
+	rpc("setWifi", [index,arg], function (data) {
+		
+	});
+}
+
+$("#getWifi").click(function (e) {
+	getWifi();
+});
+
+$("#setWifi").click(function (e) {
+	setWifi();
+});
+
 function selectChn(i) {
 	index = i;
 	zctemplet("#templetURL", config[i].url);
@@ -66,6 +113,7 @@ function selectChn(i) {
 	}
 	getConfig();
 	startPreview();
+	getWifi();
 }
 
 var player = null;

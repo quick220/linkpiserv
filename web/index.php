@@ -312,6 +312,9 @@ include("session.php");
                                     <li class="nav-item waves-effect waves-light">
                                         <a class="nav-link" data-toggle="tab" href="#cfg_intercom" role="tab"><cn>集成通信</cn><en>Intercom</en></a>
                                     </li>
+                                    <li class="nav-item waves-effect waves-light">
+                                        <a class="nav-link" data-toggle="tab" href="#cfg_wifi" role="tab"><cn>WiFi设置</cn><en>WiFi</en></a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="card-body">
@@ -629,6 +632,45 @@ include("session.php");
                                                         </div>
                                                     </div>
                                                 </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="cfg_wifi" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row mx-0" >
+                                            <div class="col-8">
+                                                <form>
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label"><cn>当前连接</cn><en>Current</en></label>
+                                                        <div class="col-6">
+                                                            <input type="text" id="curSSID" readonly="readonly" class="form-control bg-dark text-white">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label">SSID</label>
+                                                        <div class="col-6">
+                                                            <select id="ssidList" class="form-control bg-dark text-white">
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button type="button" id="getWifi" class="btn btn-warning">
+                                                                <cn>刷新</cn><en>Refresh</en>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-4 text-right col-form-label"><cn>密码</cn><en>Password</en></label>
+                                                        <div class="col-6">
+                                                            <input type="text" id="wifiPasswd" class="form-control bg-dark text-white">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <div class="row">
+                                                    <div class="col text-center">
+                                                            <button type="button" id="setWifi" class="btn btn-warning">
+                                                                <cn>连接</cn><en>Connect</en>
+                                                            </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
