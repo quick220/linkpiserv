@@ -20,7 +20,7 @@ apt update
 apt install git -y
 
 # 克隆仓库到本地
-git clone [https://github.com/quick220/linkpiserv.git](https://github.com/quick220/linkpiserv.git)
+git clone https://github.com/quick220/linkpiserv.git
 
 # 进入目录并执行安装脚本
 cd linkpiserv
