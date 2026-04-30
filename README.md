@@ -29,6 +29,9 @@ chmod +x install.sh
 
 # 安装完成后重启服务器以生效
 reboot
+
+```bash
+
 服务说明
 Intercom
 集成通信服务端程序，默认占用 UDP 7000 端口
@@ -53,10 +56,8 @@ SRT Liver Server, 默认占用 UDP 8080 端口
 
 ---
 
-### 后续建议
-1. **更新 README.en.md**：如果你需要同时维护英文文档，建议将上面的内容翻译并更新到 `README.en.md` 中。
-2. **提交更改**：
-   ```bash
+
+
    git add README.md install.sh
    git commit -m "Update: adaptation for Ubuntu 24.04 and update repository URLs"
    git push origin main
