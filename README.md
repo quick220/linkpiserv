@@ -30,7 +30,8 @@ chmod +x install.sh
 # 安装完成后重启服务器以生效
 reboot
 
-```bash
+
+bash
 
 服务说明
 Intercom
